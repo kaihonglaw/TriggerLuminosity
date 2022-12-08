@@ -5,6 +5,7 @@
 #include "DataFormats/Math/interface/deltaR.h"
 #include "DataFormats/PatCandidates/interface/PackedTriggerPrescales.h"
 #include "DataFormats/PatCandidates/interface/TriggerObjectStandAlone.h"
+#include "DataFormats/PatCandidates/interface/Electron.h"
 #include "FWCore/Common/interface/TriggerNames.h"
 #include "FWCore/Framework/interface/one/EDAnalyzer.h"
 #include "FWCore/Framework/interface/Event.h"
@@ -66,6 +67,7 @@ private:
   //
   const edm::EDGetTokenT<edm::TriggerResults> triggerResults_;
   const edm::EDGetTokenT<std::vector<pat::TriggerObjectStandAlone> > triggerObjects_;
+  //const edm::EDGetTokenT<std::vector<pat::ElectronCollection>> electronToken_;
   const edm::EDGetTokenT<pat::PackedTriggerPrescales> triggerPrescales_;
   JSONS jsons_;
   int verbose_;
@@ -82,6 +84,7 @@ MiniAODTriggerAnalyzer::MiniAODTriggerAnalyzer(const edm::ParameterSet& iConfig)
   l1Seeds_(iConfig.getParameter<std::vector<std::string> >("L1Seeds")),
   triggerResults_(consumes<edm::TriggerResults>(iConfig.getParameter<edm::InputTag>("bits"))),
   triggerObjects_(consumes<std::vector<pat::TriggerObjectStandAlone> >(iConfig.getParameter<edm::InputTag>("objects"))),
+  //electronToken_(consumes<std::vector<pat::ElectronCollection>>(iConfig.getParameter<edm::InputTag>("electrons"))),
   triggerPrescales_(consumes<pat::PackedTriggerPrescales>(iConfig.getParameter<edm::InputTag>("prescales"))),
   jsons_{},
   verbose_(iConfig.getParameter<int>("Verbose")),
@@ -144,7 +147,6 @@ void MiniAODTriggerAnalyzer::printJSONs() {
 
   uint idx1 = 0;
   for ( auto iter : jsons_ ) { 
-  
     // Find JSON map for given L1,HLT combination
     TRG trigger = iter.first;
     auto json = jsons_.find(trigger);
@@ -218,6 +220,7 @@ void MiniAODTriggerAnalyzer::analyze(const edm::Event& iEvent,
   auto triggerResultsHandle = iEvent.getHandle(triggerResults_);
   auto triggerObjectsHandle = iEvent.getHandle(triggerObjects_);
   auto triggerPrescalesHandle = iEvent.getHandle(triggerPrescales_);
+  //auto electronHandle = iEvent.getHandle(electronToken_);
 #else
   edm::Handle<edm::TriggerResults> triggerResultsHandle;
   iEvent.getByToken(triggerResults_, triggerResultsHandle);
@@ -225,6 +228,8 @@ void MiniAODTriggerAnalyzer::analyze(const edm::Event& iEvent,
   iEvent.getByToken(triggerObjects_, triggerObjectsHandle);
   edm::Handle<pat::PackedTriggerPrescales > triggerPrescalesHandle;
   iEvent.getByToken(triggerPrescales_, triggerPrescalesHandle);
+  //edm::Handle<std::vector<pat::ElectronCollection >> electronHandle;
+  //iEvent.getByToken(electronToken_, electronHandle);
 #endif
   const edm::TriggerNames& triggerNames = iEvent.triggerNames(*triggerResultsHandle);
 
@@ -236,7 +241,7 @@ void MiniAODTriggerAnalyzer::analyze(const edm::Event& iEvent,
     std::string hltPathVersioned;
     size_t pathIndex = getPathIndex(hltPath,triggerNames);
     if ( pathIndex >= triggerNames.size() ) {
-      std::cout << "hltPath " << hltPath << " is not found in the trigger menu!" << std::endl;
+      //std::cout << "hltPath " << hltPath << " is not found in the trigger menu!" << std::endl;
       continue;
     } else { hltPathVersioned = triggerNames.triggerName(pathIndex); }
     //std::cout << "HLT path (versioned): " << hltPathVersioned << std::endl;
@@ -289,7 +294,37 @@ void MiniAODTriggerAnalyzer::analyze(const edm::Event& iEvent,
       delimiter = "_eta1p22";
       hlt_str = hlt_str.substr(0,hlt_str.find(delimiter));
       if (hlt_str.find("p")==std::string::npos) { hlt_str.append("p0"); }
-      
+      //std::cout<< l1_seed <<std::endl;
+      std::vector<pat::TriggerObjectStandAlone> triggercollection; 
+      triggercollection.clear();     
+      for (pat::TriggerObjectStandAlone obj : *triggerObjectsHandle) { 
+          //std::cout<< " pt of object" << obj.pt()<<std::endl;
+          triggercollection.push_back(obj);
+      }
+      //std::cout<< "event --------"<<event<<std::endl;
+      bool trigdrflag = false;
+      for(int trig1 = 0; trig1 < (int)triggercollection.size(); trig1++){
+        for(int trig2 = trig1 + 1; trig2 < (int)triggercollection.size(); trig2++){
+          const pat::TriggerObjectStandAlone obj1 = triggercollection[trig1];
+          const pat::TriggerObjectStandAlone obj2 = triggercollection[trig2];
+          float dr_trig = reco::deltaR(obj1.eta(),obj1.phi(),obj2.eta(),obj2.phi());
+          if( dr_trig < 0.6){
+            trigdrflag = true;
+            //std::cout<<"trigger DR ---------"<<dr_trig<<std::endl;
+            //std::cout << "Trigger object1:  pt " << obj1.pt() << ", eta1 " << obj1.eta() << ", phi1 " << obj1.phi() <<std::endl;
+            //std::cout << "Trigger object2:  pt " << obj2.pt() << ", eta1 " << obj2.eta() << ", phi1 " << obj2.phi() <<std::endl;
+          }
+          else{
+            continue;
+          }
+        }
+
+      }
+      if(!trigdrflag){
+        continue;
+      }
+      //std::cout<<triggercollection.size()<<endl;
+      //std::cout<<std::endl;
       // Add entry to JSON maps
       TRG trigger(l1_str,hlt_str);
       auto entry1 = jsons_.find(trigger);
@@ -314,10 +349,10 @@ void MiniAODTriggerAnalyzer::printPathsAndObjects(const edm::Handle<edm::Trigger
 
   std::cout << "\n == TRIGGER PATHS= " << std::endl;
   for (unsigned int i = 0, n = triggerResultsHandle->size(); i < n; ++i) {
-    std::cout << "Trigger " << triggerNames.triggerName(i) <<
+    /*std::cout << "Trigger " << triggerNames.triggerName(i) <<
       ", prescale " << triggerPrescalesHandle->getPrescaleForIndex(i) <<
       ": " << (triggerResultsHandle->accept(i) ? "PASS" : "fail (or not run)")
-	      << std::endl;
+	      << std::endl;*/
   }
   
   std::cout << "\n TRIGGER OBJECTS " << std::endl;
@@ -344,13 +379,12 @@ void MiniAODTriggerAnalyzer::printPathsAndObjects(const edm::Handle<edm::Trigger
       bool isL3   = obj.hasPathName( pathNamesAll[h], false, true );
       bool isLF   = obj.hasPathName( pathNamesAll[h], true, false );
       bool isNone = obj.hasPathName( pathNamesAll[h], false, false );
-      std::cout << "   " << pathNamesAll[h];
+      std::cout << "-------------------" << pathNamesAll[h];
       if (isBoth) std::cout << "(L,3)";
       if (isL3 && !isBoth) std::cout << "(*,3)";
       if (isLF && !isBoth) std::cout << "(L,*)";
       if (isNone && !isBoth && !isL3 && !isLF) std::cout << "(*,*)";
     }
-    std::cout << std::endl;
   }
   std::cout << std::endl;
 }

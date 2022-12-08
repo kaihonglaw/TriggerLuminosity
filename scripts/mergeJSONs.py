@@ -18,13 +18,13 @@ from mergeJSON import *
 #inputs.append(base+'TriggerLuminosity_2022Sep30/ParkingDoubleElectronLowMass*/crab_Run2022C*_part*/220930_*/000*/output_*.json') # Era C
 #inputs.append(base+'TriggerLuminosity_2022Sep30/ParkingDoubleElectronLowMass*/crab_Run2022Dv2_part*/220930_*/000*/output_*.json') # Era Dv2
 
-base='/eos/cms/store/group/phys_bphys/DiElectronX/test/trigger/'
+base='/eos/cms/store/group/phys_bphys/DiElectronX/FirstPass/trigger_jsons/JSON/'
 inputs = []
-inputs.append(base+'TriggerLuminosity_2022Nov11/ParkingDoubleElectronLowMass*/crab_Run2022C_part*/221111_*/000*/output_*.json') # Era C
-inputs.append(base+'TriggerLuminosity_2022Oct02/ParkingDoubleElectronLowMass*/crab_Run2022Dv1_part*/221002_*/000*/output_*.json') # Era Dv1
-inputs.append(base+'TriggerLuminosity_2022Nov11/ParkingDoubleElectronLowMass*/crab_Run2022Dv2_part*/221111_*/000*/output_*.json') # Era Dv2
-inputs.append(base+'TriggerLuminosity_2022Nov07/ParkingDoubleElectronLowMass*/crab_Run2022E_part*/221107_*/000*/output_*.json') # Era E
-inputs.append(base+'TriggerLuminosity_2022Nov08/ParkingDoubleElectronLowMass*/crab_Run2022F_part*/221108_*/000*/output_*.json') # Era F
+inputs.append(base+'TriggerLuminosity_2022Dec08/ParkingDoubleElectronLowMass*/crab_Run2022C_part*/221208_*/000*/output_*.json') # Era C
+inputs.append(base+'TriggerLuminosity_2022Dec08/ParkingDoubleElectronLowMass*/crab_Run2022Dv1_part*/221208_*/000*/output_*.json') # Era Dv1
+inputs.append(base+'TriggerLuminosity_2022Dec08/ParkingDoubleElectronLowMass*/crab_Run2022Dv2_part*/221208_*/000*/output_*.json') # Era Dv2
+inputs.append(base+'TriggerLuminosity_2022Dec08/ParkingDoubleElectronLowMass*/crab_Run2022E_part*/221208_*/000*/output_*.json') # Era E
+inputs.append(base+'TriggerLuminosity_2022Dec08/ParkingDoubleElectronLowMass*/crab_Run2022F_part*/221208_*/000*/output_*.json') # Era F
 
 files = [ name for input in inputs for name in glob.glob(input) ]
 print("len(files)",len(files))
@@ -32,7 +32,8 @@ print("len(files)",len(files))
 
 dct = {}
 for ifilename,filename in enumerate(files):
-    print("Merging file \""+filename+"\" (number "+str(ifilename)+" out of "+str(len(files))+") ...")
+    if ifilename % 1000 == 0:
+        print("Merging file \""+filename+"\" (number "+str(ifilename)+" out of "+str(len(files))+") ...")
     jsonFile = open(filename,'r')
     jsonDict = json.load(jsonFile)
     for (trigger,runs_lumis) in jsonDict.items():
@@ -51,7 +52,7 @@ print()
 for idx,(trigger,lumiList) in enumerate(dct.items()): 
     print(trigger+":")
     print(str(lumiList))
-    with open('jsons/current/{:s}_Excl.json'.format(trigger), 'w') as output: json.dump(lumiList.getCompactList(), output)
+    with open('jsons/currentdr/{:s}_Excl.json'.format(trigger), 'w') as output: json.dump(lumiList.getCompactList(), output)
 
 ################################################################################
 ################################################################################
