@@ -237,14 +237,14 @@ void MiniAODTriggerAnalyzer::analyze(const edm::Event& iEvent,
   
   for ( const auto& hltPath: hltPaths_ ) {
 
-    //std::cout << "HLT path: " << hltPath << std::endl;
+    std::cout << "HLT path: " << hltPath << std::endl;
     std::string hltPathVersioned;
     size_t pathIndex = getPathIndex(hltPath,triggerNames);
     if ( pathIndex >= triggerNames.size() ) {
       //std::cout << "hltPath " << hltPath << " is not found in the trigger menu!" << std::endl;
       continue;
     } else { hltPathVersioned = triggerNames.triggerName(pathIndex); }
-    //std::cout << "HLT path (versioned): " << hltPathVersioned << std::endl;
+    std::cout << "HLT path (versioned): " << hltPathVersioned << std::endl;
     
     int prescaleSet = hltPrescaleProvider_.prescaleSet(iEvent, iSetup);
 #ifndef CMSSW_10_2_X
@@ -261,6 +261,7 @@ void MiniAODTriggerAnalyzer::analyze(const edm::Event& iEvent,
       if (int(entry.second)>0) {
 	l1_seed = entry.first;
 	l1_prescale = entry.second;
+  std::cout<< "l1_seed --- " <<l1_seed<<std::endl;
 	break; // Always find lowest unprescaled L1 seed ...
       }
     }
@@ -276,53 +277,29 @@ void MiniAODTriggerAnalyzer::analyze(const edm::Event& iEvent,
       }
       auto run = iEvent.id().run();
       auto ls = iEvent.luminosityBlock();
-      //auto event = iEvent.id().event();
+      auto event = iEvent.id().event();
 
       // Reformat L1 seed and HLT path strings
       // L1:  L1_DoubleEGXXpX_er1p2_dR_Max0p6
       // HLT: HLT_DoubleEleXXpX_eta1p22_mMax6
       std::string delimiter = "";
       std::string l1_str = l1_seed;
-      delimiter = "L1_DoubleEG";
+      delimiter = "L1_SingleMu";
       l1_str = l1_str.substr(l1_str.find(delimiter)+delimiter.length(),std::string::npos);
-      delimiter = "_er1p2";
+      std::cout<< l1_str <<std::endl;
+      delimiter = "er";
       l1_str = l1_str.substr(0,l1_str.find(delimiter));
       if (l1_str.find("p")==std::string::npos) { l1_str.append("p0"); }
       std::string hlt_str = hlt_path;
-      delimiter = "HLT_DoubleEle";
+      delimiter = "HLT_Mu";
       hlt_str = hlt_str.substr(hlt_str.find(delimiter)+delimiter.length(),std::string::npos);
-      delimiter = "_eta1p22";
+      delimiter = "_IP6";
       hlt_str = hlt_str.substr(0,hlt_str.find(delimiter));
       if (hlt_str.find("p")==std::string::npos) { hlt_str.append("p0"); }
+      std::cout<< l1_str <<std::endl;
+      std::cout<< hlt_str <<std::endl;
       //std::cout<< l1_seed <<std::endl;
-      std::vector<pat::TriggerObjectStandAlone> triggercollection; 
-      triggercollection.clear();     
-      for (pat::TriggerObjectStandAlone obj : *triggerObjectsHandle) { 
-          //std::cout<< " pt of object" << obj.pt()<<std::endl;
-          triggercollection.push_back(obj);
-      }
-      //std::cout<< "event --------"<<event<<std::endl;
-      bool trigdrflag = false;
-      for(int trig1 = 0; trig1 < (int)triggercollection.size(); trig1++){
-        for(int trig2 = trig1 + 1; trig2 < (int)triggercollection.size(); trig2++){
-          const pat::TriggerObjectStandAlone obj1 = triggercollection[trig1];
-          const pat::TriggerObjectStandAlone obj2 = triggercollection[trig2];
-          float dr_trig = reco::deltaR(obj1.eta(),obj1.phi(),obj2.eta(),obj2.phi());
-          if( dr_trig < 0.6){
-            trigdrflag = true;
-            //std::cout<<"trigger DR ---------"<<dr_trig<<std::endl;
-            //std::cout << "Trigger object1:  pt " << obj1.pt() << ", eta1 " << obj1.eta() << ", phi1 " << obj1.phi() <<std::endl;
-            //std::cout << "Trigger object2:  pt " << obj2.pt() << ", eta1 " << obj2.eta() << ", phi1 " << obj2.phi() <<std::endl;
-          }
-          else{
-            continue;
-          }
-        }
 
-      }
-      if(!trigdrflag){
-        continue;
-      }
       //std::cout<<triggercollection.size()<<endl;
       //std::cout<<std::endl;
       // Add entry to JSON maps

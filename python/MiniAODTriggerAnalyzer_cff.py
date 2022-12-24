@@ -28,19 +28,7 @@ seeds = [
 
 # Order is important !!!
 paths=[
-    'HLT_DoubleEle4_eta1p22_mMax6',
-    'HLT_DoubleEle4p5_eta1p22_mMax6',
-    'HLT_DoubleEle5_eta1p22_mMax6',
-    'HLT_DoubleEle5p5_eta1p22_mMax6',
-    'HLT_DoubleEle6_eta1p22_mMax6',
-    'HLT_DoubleEle6p5_eta1p22_mMax6',
-    'HLT_DoubleEle7_eta1p22_mMax6',
-    'HLT_DoubleEle7p5_eta1p22_mMax6',
-    'HLT_DoubleEle8_eta1p22_mMax6',
-    'HLT_DoubleEle8p5_eta1p22_mMax6',
-    'HLT_DoubleEle9_eta1p22_mMax6',
-    'HLT_DoubleEle9p5_eta1p22_mMax6',
-    'HLT_DoubleEle10_eta1p22_mMax6',
+    'HLT_Mu9_IP6_part0'
 ]
 
 miniAODTriggerAnalyzer = cms.EDAnalyzer(
