@@ -15,7 +15,8 @@ process.source = cms.Source(
         #'root://cms-xrd-global.cern.ch//store/data/Run2022D/ParkingDoubleElectronLowMass0/MINIAOD/PromptReco-v1/000/357/538/00000/5fa3a99a-66e3-4925-a1da-95e669cc128b.root',
         #'root://cms-xrd-global.cern.ch//store/data/Run2022D/ParkingDoubleElectronLowMass0/MINIAOD/PromptReco-v2/000/357/734/00000/3375647e-199a-4a8c-a041-5e8536d55077.root',
         'file:/eos/user/j/jodedra/kaitriggerlumi/CMSSW_12_4_8/src/pythontriggeranalysis/bparking.root',
-        'root://cms-xrd-global.cern.ch//store/data/Run2018A/ParkingBPH4/MINIAOD/UL2018_MiniAODv2-v1/260000/00016AEA-FE2B-2644-9701-776BF76FA150.root'
+        'root://cms-xrd-global.cern.ch//store/data/Run2018B/ParkingBPH1/MINIAOD/05May2019-v2/230000/00496A25-08B6-FB4E-9681-D5FF4E1BE81F.root',
+        #'root://cms-xrd-global.cern.ch//store/data/Run2018B/ParkingBPH1/MINIAOD/05May2019-v2/230000/00775987-81BC-A246-91CB-6056E660D7AD.root',
     )
 )
 

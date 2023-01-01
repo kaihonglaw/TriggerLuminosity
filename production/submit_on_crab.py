@@ -14,7 +14,8 @@ config.General.workArea = 'TriggerLuminosity_{:s}'.format(production_tag)
 
 config.section_('Data')
 config.Data.publication = False
-config.Data.outLFNDirBase = '/store/group/phys_bphys/DiElectronX/test/trigger/{:s}'.format(config.General.workArea)
+#config.Data.outLFNDirBase = '/store/group/phys_bphys/DiElectronX/test/trigger/{:s}'.format(config.General.workArea)
+config.Data.outLFNDirBase = '/store/user/jodedra/Run3SingleMunotrigmatch/20220831/{:s}'.format(config.General.workArea)
 config.Data.inputDBS = 'global'
 
 config.section_('JobType')
@@ -25,7 +26,7 @@ config.JobType.psetName = '../test/test_cfg.py'
 
 config.section_('User')
 config.section_('Site')
-config.Site.storageSite = 'T2_CH_CERN'
+config.Site.storageSite = 'T3_CH_CERN'
 
 if __name__ == '__main__':
 

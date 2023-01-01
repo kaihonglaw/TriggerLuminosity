@@ -237,14 +237,14 @@ void MiniAODTriggerAnalyzer::analyze(const edm::Event& iEvent,
   
   for ( const auto& hltPath: hltPaths_ ) {
 
-    std::cout << "HLT path: " << hltPath << std::endl;
+    //std::cout << "HLT path: " << hltPath << std::endl;
     std::string hltPathVersioned;
     size_t pathIndex = getPathIndex(hltPath,triggerNames);
     if ( pathIndex >= triggerNames.size() ) {
       //std::cout << "hltPath " << hltPath << " is not found in the trigger menu!" << std::endl;
       continue;
     } else { hltPathVersioned = triggerNames.triggerName(pathIndex); }
-    std::cout << "HLT path (versioned): " << hltPathVersioned << std::endl;
+    //std::cout << "HLT path (versioned): " << hltPathVersioned << std::endl;
     
     int prescaleSet = hltPrescaleProvider_.prescaleSet(iEvent, iSetup);
 #ifndef CMSSW_10_2_X
@@ -261,7 +261,7 @@ void MiniAODTriggerAnalyzer::analyze(const edm::Event& iEvent,
       if (int(entry.second)>0) {
 	l1_seed = entry.first;
 	l1_prescale = entry.second;
-  std::cout<< "l1_seed --- " <<l1_seed<<std::endl;
+  //std::cout<< "l1_seed --- " <<l1_seed<<std::endl;
 	break; // Always find lowest unprescaled L1 seed ...
       }
     }
@@ -286,7 +286,7 @@ void MiniAODTriggerAnalyzer::analyze(const edm::Event& iEvent,
       std::string l1_str = l1_seed;
       delimiter = "L1_SingleMu";
       l1_str = l1_str.substr(l1_str.find(delimiter)+delimiter.length(),std::string::npos);
-      std::cout<< l1_str <<std::endl;
+      //std::cout<< l1_str <<std::endl;
       delimiter = "er";
       l1_str = l1_str.substr(0,l1_str.find(delimiter));
       if (l1_str.find("p")==std::string::npos) { l1_str.append("p0"); }
@@ -296,8 +296,8 @@ void MiniAODTriggerAnalyzer::analyze(const edm::Event& iEvent,
       delimiter = "_IP6";
       hlt_str = hlt_str.substr(0,hlt_str.find(delimiter));
       if (hlt_str.find("p")==std::string::npos) { hlt_str.append("p0"); }
-      std::cout<< l1_str <<std::endl;
-      std::cout<< hlt_str <<std::endl;
+      //std::cout<< l1_str <<std::endl;
+      //std::cout<< hlt_str <<std::endl;
       //std::cout<< l1_seed <<std::endl;
 
       //std::cout<<triggercollection.size()<<endl;
