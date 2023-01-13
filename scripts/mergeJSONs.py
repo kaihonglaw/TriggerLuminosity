@@ -18,13 +18,14 @@ from mergeJSON import *
 #inputs.append(base+'TriggerLuminosity_2022Sep30/ParkingDoubleElectronLowMass*/crab_Run2022C*_part*/220930_*/000*/output_*.json') # Era C
 #inputs.append(base+'TriggerLuminosity_2022Sep30/ParkingDoubleElectronLowMass*/crab_Run2022Dv2_part*/220930_*/000*/output_*.json') # Era Dv2
 
-base='/eos/cms/store/group/phys_bphys/DiElectronX/FirstPass/trigger_jsons/JSON/'
+base='/eos/user/k/klaw/TriggerLuminosity/20230112new/'
 inputs = []
-inputs.append(base+'TriggerLuminosity_2022Dec08/ParkingDoubleElectronLowMass*/crab_Run2022C_part*/221208_*/000*/output_*.json') # Era C
-inputs.append(base+'TriggerLuminosity_2022Dec08/ParkingDoubleElectronLowMass*/crab_Run2022Dv1_part*/221208_*/000*/output_*.json') # Era Dv1
-inputs.append(base+'TriggerLuminosity_2022Dec08/ParkingDoubleElectronLowMass*/crab_Run2022Dv2_part*/221208_*/000*/output_*.json') # Era Dv2
-inputs.append(base+'TriggerLuminosity_2022Dec08/ParkingDoubleElectronLowMass*/crab_Run2022E_part*/221208_*/000*/output_*.json') # Era E
-inputs.append(base+'TriggerLuminosity_2022Dec08/ParkingDoubleElectronLowMass*/crab_Run2022F_part*/221208_*/000*/output_*.json') # Era F
+inputs.append(base+'triggerluminositynew_2023Jan12/ParkingBPH*/crab_ParkingBPH*/230112_*/000*/output_*.json')
+#inputs.append(base+'TriggerLuminosity_2022Dec08/ParkingDoubleElectronLowMass*/crab_Run2022C_part*/221208_*/000*/output_*.json') # Era C
+#inputs.append(base+'TriggerLuminosity_2022Dec08/ParkingDoubleElectronLowMass*/crab_Run2022Dv1_part*/221208_*/000*/output_*.json') # Era Dv1
+#inputs.append(base+'TriggerLuminosity_2022Dec08/ParkingDoubleElectronLowMass*/crab_Run2022Dv2_part*/221208_*/000*/output_*.json') # Era Dv2
+#inputs.append(base+'TriggerLuminosity_2022Dec08/ParkingDoubleElectronLowMass*/crab_Run2022E_part*/221208_*/000*/output_*.json') # Era E
+#inputs.append(base+'TriggerLuminosity_2022Dec08/ParkingDoubleElectronLowMass*/crab_Run2022F_part*/221208_*/000*/output_*.json') # Era F
 
 files = [ name for input in inputs for name in glob.glob(input) ]
 print("len(files)",len(files))
@@ -52,7 +53,7 @@ print()
 for idx,(trigger,lumiList) in enumerate(dct.items()): 
     print(trigger+":")
     print(str(lumiList))
-    with open('jsons/currentdr/{:s}_Excl.json'.format(trigger), 'w') as output: json.dump(lumiList.getCompactList(), output)
+    with open('jsons/currentdrnew3/{:s}_Excl.json'.format(trigger), 'w') as output: json.dump(lumiList.getCompactList(), output)
 
 ################################################################################
 ################################################################################

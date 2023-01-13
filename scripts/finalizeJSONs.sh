@@ -1,6 +1,6 @@
 # These are the jsons ordered by threshold ....
 
-files=(jsons/current/L1_*_HLT_*_Excl_Golden.json)
+files=(jsons/currentdrnew3/L1_*_HLT_*_Excl_Golden.json)
 files=(`printf '%s\n' "${files[@]}"|sort -V`)
 
 for i in ${!files[@]}; do

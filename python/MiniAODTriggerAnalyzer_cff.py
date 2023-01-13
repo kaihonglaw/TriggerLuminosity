@@ -28,7 +28,11 @@ seeds = [
 
 # Order is important !!!
 paths=[
-    'HLT_Mu9_IP6_part0'
+    'HLT_Mu9_IP6_part0',
+    'HLT_Mu9_IP6_part1',
+    'HLT_Mu9_IP6_part2',
+    'HLT_Mu9_IP6_part3',
+    'HLT_Mu9_IP6_part4',
 ]
 
 miniAODTriggerAnalyzer = cms.EDAnalyzer(
