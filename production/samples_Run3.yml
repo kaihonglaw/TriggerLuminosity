@@ -4,7 +4,7 @@ common:
     globaltag: 124X_dataRun3_Prompt_v4 
     lumimask: https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions18/13TeV/Legacy_2018/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON.txt
 samples:
-  ParkingBPH%d:
+  ParkingBPH_B%d:
     dataset: /ParkingBPH%d/Run2018B-05May2019-v2/MINIAOD
     isMC: False
     parts:
@@ -14,3 +14,24 @@ samples:
       - 4
       - 5 
       - 6
+  ParkingBPH_A%d:
+    dataset: /ParkingBPH%d/Run2018A-05May2019-v1/MINIAOD
+    isMC: False
+    parts:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+  ParkingBPH_C%d:
+    dataset: /ParkingBPH%d/Run2018C-05May2019-v1/MINIAOD
+    isMC: False
+    parts:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      
+

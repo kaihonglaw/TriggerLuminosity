@@ -19,8 +19,10 @@ from mergeJSON import *
 #inputs.append(base+'TriggerLuminosity_2022Sep30/ParkingDoubleElectronLowMass*/crab_Run2022Dv2_part*/220930_*/000*/output_*.json') # Era Dv2
 
 base='/eos/user/k/klaw/TriggerLuminosity/20230112new/'
+base2='/eos/user/k/klaw/TriggerLuminosity/20230114/'
 inputs = []
-inputs.append(base+'triggerluminositynew_2023Jan12/ParkingBPH*/crab_ParkingBPH*/230112_*/000*/output_*.json')
+inputs.append(base+'triggerluminositynew_2023Jan12/ParkingBPH3/crab_ParkingBPH3/230112_*/000*/output_*.json')
+inputs.append(base2+'triggerluminosity_2023Jan14/ParkingBPH*/crab_ParkingBPH_*/230114_*/000*/output_*.json')
 #inputs.append(base+'TriggerLuminosity_2022Dec08/ParkingDoubleElectronLowMass*/crab_Run2022C_part*/221208_*/000*/output_*.json') # Era C
 #inputs.append(base+'TriggerLuminosity_2022Dec08/ParkingDoubleElectronLowMass*/crab_Run2022Dv1_part*/221208_*/000*/output_*.json') # Era Dv1
 #inputs.append(base+'TriggerLuminosity_2022Dec08/ParkingDoubleElectronLowMass*/crab_Run2022Dv2_part*/221208_*/000*/output_*.json') # Era Dv2
@@ -53,7 +55,7 @@ print()
 for idx,(trigger,lumiList) in enumerate(dct.items()): 
     print(trigger+":")
     print(str(lumiList))
-    with open('jsons/currentdrnew3/{:s}_Excl.json'.format(trigger), 'w') as output: json.dump(lumiList.getCompactList(), output)
+    with open('jsons/currentdralleras/{:s}_Excl.json'.format(trigger), 'w') as output: json.dump(lumiList.getCompactList(), output)
 
 ################################################################################
 ################################################################################

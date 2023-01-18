@@ -33,6 +33,7 @@ paths=[
     'HLT_Mu9_IP6_part2',
     'HLT_Mu9_IP6_part3',
     'HLT_Mu9_IP6_part4',
+    'HLT_Mu9_IP6_part5',
 ]
 
 miniAODTriggerAnalyzer = cms.EDAnalyzer(

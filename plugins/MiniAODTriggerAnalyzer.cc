@@ -261,7 +261,7 @@ void MiniAODTriggerAnalyzer::analyze(const edm::Event& iEvent,
       if (int(entry.second)>0) {
 	l1_seed = entry.first;
 	l1_prescale = entry.second;
-  //std::cout<< "l1_seed --- " <<l1_seed<<std::endl;
+    //std::cout<< "l1_seed --- " <<l1_seed<<std::endl;
 	break; // Always find lowest unprescaled L1 seed ...
       }
     }
