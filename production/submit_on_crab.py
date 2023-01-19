@@ -15,7 +15,7 @@ config.General.workArea = 'triggerluminosity_{:s}'.format(production_tag)
 config.section_('Data')
 config.Data.publication = False
 #config.Data.outLFNDirBase = '/store/group/phys_bphys/DiElectronX/test/trigger/{:s}'.format(config.General.workArea)
-config.Data.outLFNDirBase = '/store/user/klaw/TriggerLuminosity/20230114/{:s}'.format(config.General.workArea)
+config.Data.outLFNDirBase = '/store/user/klaw/TriggerLuminosity/20230118/{:s}'.format(config.General.workArea)
 config.Data.inputDBS = 'global'
 
 config.section_('JobType')

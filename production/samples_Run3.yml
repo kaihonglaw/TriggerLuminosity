@@ -33,5 +33,24 @@ samples:
       - 3
       - 4
       - 5
-      
+  ParkingBPH_D%d:
+    dataset: /ParkingBPH%d/Run2018D-20Mar2019-v1/MINIAOD
+    isMC: False
+    parts:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+  ParkingBPHPrompt_D%d:
+    dataset: /ParkingBPH%d/Run2018D-05May2019promptD-v1/MINIAOD
+    isMC: False
+    parts:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+
+   
 
