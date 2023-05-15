@@ -293,11 +293,11 @@ void MiniAODTriggerAnalyzer::analyze(const edm::Event& iEvent,
       std::string hlt_str = hlt_path;
       delimiter = "HLT_Mu";
       hlt_str = hlt_str.substr(hlt_str.find(delimiter)+delimiter.length(),std::string::npos);
-      delimiter = "_IP6";
+      delimiter = "_IP";
       hlt_str = hlt_str.substr(0,hlt_str.find(delimiter));
       if (hlt_str.find("p")==std::string::npos) { hlt_str.append("p0"); }
-      //std::cout<< l1_str <<std::endl;
-      //std::cout<< hlt_str <<std::endl;
+      std::cout<< l1_str <<std::endl;
+      std::cout<< hlt_str <<std::endl;
       //std::cout<< l1_seed <<std::endl;
 
       //std::cout<<triggercollection.size()<<endl;
