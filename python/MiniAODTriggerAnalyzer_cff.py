@@ -18,7 +18,7 @@ seeds = [
     'L1_SingleMu14er1p5',
     'L1_SingleMu16er1p5',
     'L1_SingleMu18er1p5',
-    'L1_SingleMu22er1p5',
+    'L1_SingleMu22',
 ]
 
 # Order is important !!!
@@ -82,7 +82,7 @@ paths=[
     'HLT_Mu12_IP6_part2',
     'HLT_Mu12_IP6_part3',
     'HLT_Mu12_IP6_part4',
-    'HLT_Mu12_IP6_part5', 
+    'HLT_Mu12_IP6_part5',  
 ]
 
 miniAODTriggerAnalyzer = cms.EDAnalyzer(

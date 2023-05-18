@@ -16,8 +16,13 @@ process.source = cms.Source(
         #'root://cms-xrd-global.cern.ch//store/data/Run2022D/ParkingDoubleElectronLowMass0/MINIAOD/PromptReco-v2/000/357/734/00000/3375647e-199a-4a8c-a041-5e8536d55077.root',
         #'file:/eos/user/j/jodedra/kaitriggerlumi/CMSSW_12_4_8/src/pythontriggeranalysis/bparking.root',
         #'root://cms-xrd-global.cern.ch//store/data/Run2018B/ParkingBPH2/MINIAOD/05May2019-v2/230000/00491039-6E7C-CE49-8A42-E8430628AAE6.root',
-        'root://cms-xrd-global.cern.ch//store/data/Run2018B/ParkingBPH1/MINIAOD/05May2019-v2/230000/00496A25-08B6-FB4E-9681-D5FF4E1BE81F.root',
+        #'root://cms-xrd-global.cern.ch//store/data/Run2018B/ParkingBPH1/MINIAOD/05May2019-v2/230000/00496A25-08B6-FB4E-9681-D5FF4E1BE81F.root',
         #'root://cms-xrd-global.cern.ch//store/data/Run2018B/ParkingBPH1/MINIAOD/05May2019-v2/230000/00775987-81BC-A246-91CB-6056E660D7AD.root',
+        #'root://cms-xrd-global.cern.ch//store/data/Run2018B/ParkingBPH1/MINIAOD/05May2019-v2/230000/00496A25-08B6-FB4E-9681-D5FF4E1BE81F.root',
+        #'root://cms-xrd-global.cern.ch/store/data/Run2018B/ParkingBPH1/MINIAOD/05May2019-v2/230000/00775987-81BC-A246-91CB-6056E660D7AD.root',
+        'root://cms-xrd-global.cern.ch//store/data/Run2018B/ParkingBPH1/MINIAOD/05May2019-v2/230000/00FB043E-FE58-CE4F-A3B4-FE9575FC4CBB.root',
+        #'root://cms-xrd-global.cern.ch//store/data/Run2018B/ParkingBPH1/MINIAOD/05May2019-v2/230000/0128AE4B-AED9-4F46-869C-5747F4859546.root',
+        #'root://cms-xrd-global.cern.ch//store/data/Run2018B/ParkingBPH1/MINIAOD/05May2019-v2/230000/01CB7DE1-3827-A143-985D-9F5BB6822E77.root',
     )
 )
 

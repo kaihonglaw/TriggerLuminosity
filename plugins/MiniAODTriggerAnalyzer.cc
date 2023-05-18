@@ -237,7 +237,7 @@ void MiniAODTriggerAnalyzer::analyze(const edm::Event& iEvent,
   
   for ( const auto& hltPath: hltPaths_ ) {
 
-    //std::cout << "HLT path: " << hltPath << std::endl;
+    std::cout << "HLT path: " << hltPath << std::endl;
     std::string hltPathVersioned;
     size_t pathIndex = getPathIndex(hltPath,triggerNames);
     if ( pathIndex >= triggerNames.size() ) {
@@ -255,16 +255,47 @@ void MiniAODTriggerAnalyzer::analyze(const edm::Event& iEvent,
     
     std::string hlt_path = hltPath; // Don't use versioned here
     double hlt_prescale = l1HLTDetailPSDouble.second;
+    std::cout << "hlt prescale = " << hlt_prescale<<std::endl;
     std::string l1_seed = "";
     double l1_prescale = 0;
+    std::vector<std::string> l1_seeds_check;
+    std::vector<int> l1_str_check;  
+
     for (const auto& entry : l1HLTDetailPSDouble.first) {
-      if (int(entry.second)>0) {
+
+      if (int(entry.second)>0){
+        std::cout<< "l1_seed --- " <<entry.first<<std::endl;
+        std::cout<< "l1_prescale --- " <<entry.second<<std::endl;
+      }
+
+      if (int(entry.second) >0) { // Only check the unprescaled seeds
 	l1_seed = entry.first;
 	l1_prescale = entry.second;
-    //std::cout<< "l1_seed --- " <<l1_seed<<std::endl;
-	break; // Always find lowest unprescaled L1 seed ...
+        //std::cout<< "l1_seed --- " <<l1_seed<<std::endl;
+        //std::cout<< "l1_prescale --- " <<l1_prescale<<std::endl;
+	//break; // Always find lowest unprescaled L1 seed ...
+	
+        std::string delimiter_original = "";
+        std::string l1_str_original = l1_seed;
+        delimiter_original = "L1_SingleMu";
+        l1_str_original = l1_str_original.substr(l1_str_original.find(delimiter_original)+delimiter_original.length(),std::string::npos);
+        delimiter_original = "er";
+        l1_str_original = l1_str_original.substr(0,l1_str_original.find(delimiter_original));	
+        std::cout<< "l1_str_original = " << l1_str_original <<std::endl;
+
+        if (l1_seeds_check.size() == 0){
+          l1_seeds_check.push_back(l1_seed);
+          l1_str_check.push_back(std::stoi(l1_str_original));
+        }
+        if (std::stoi(l1_str_original) < l1_str_check[0]){
+          l1_seeds_check[0] = l1_seed;
+          l1_str_check[0] = std::stoi(l1_str_original); 
+        }
+      
       }
     }
+    l1_seed = l1_seeds_check[0];
+    std::cout << "l1_seed final " << l1_seed <<std::endl;
 
     if (hlt_prescale>0 && l1_prescale>0) {
       if (verbose_>1) {
@@ -298,7 +329,7 @@ void MiniAODTriggerAnalyzer::analyze(const edm::Event& iEvent,
       if (hlt_str.find("p")==std::string::npos) { hlt_str.append("p0"); }
       std::cout<< l1_str <<std::endl;
       std::cout<< hlt_str <<std::endl;
-      //std::cout<< l1_seed <<std::endl;
+      std::cout<< l1_seed <<std::endl;
 
       //std::cout<<triggercollection.size()<<endl;
       //std::cout<<std::endl;
