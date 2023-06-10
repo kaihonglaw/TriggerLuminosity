@@ -1,9 +1,9 @@
 # These are the jsons ordered by threshold ....
 
-FILES=(jsons/current/L1_*_HLT_*_Excl_Golden.json)
+FILES=(jsons/currentdralltriggers_with_IP/L1_*_HLT_*_Excl_Golden.json)
 FILES=(`printf '%s\n' "${FILES[@]}"|sort -V`)
 
-FILE_TOTAL="jsons/current/running_total.json"
+FILE_TOTAL="jsons/currentdralltriggers_with_IP/running_total.json"
 rm $FILE_TOTAL # ensure starting from new empty file
 for IDX in ${!FILES[@]}; do
     if [[ "$IDX" -eq 0 ]]; then

@@ -28,7 +28,7 @@
 
 typedef std::vector<int> LS;
 typedef std::map<int,LS> JSON;
-typedef std::pair<std::string,std::string> TRG;
+typedef std::tuple<std::string,std::string,std::string> TRG;
 typedef std::map<TRG,JSON> JSONS;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -156,7 +156,7 @@ void MiniAODTriggerAnalyzer::printJSONs() {
       return;
     }
     
-    ss << "\"L1_" << trigger.first << "_HLT_" << trigger.second << "\":" << std::endl;
+    ss << "\"L1_" << std::get<0>(trigger) << "_HLT_" << std::get<1>(trigger) << "_IP_" << std::get<2>(trigger) << "\":" << std::endl;
     
     // Create JSON output with format: { "run": [[ls,ls]], ... }
     ss << "{" << std::endl;
@@ -241,10 +241,10 @@ void MiniAODTriggerAnalyzer::analyze(const edm::Event& iEvent,
     std::string hltPathVersioned;
     size_t pathIndex = getPathIndex(hltPath,triggerNames);
     if ( pathIndex >= triggerNames.size() ) {
-      //std::cout << "hltPath " << hltPath << " is not found in the trigger menu!" << std::endl;
+      std::cout << "hltPath " << hltPath << " is not found in the trigger menu!" << std::endl;
       continue;
     } else { hltPathVersioned = triggerNames.triggerName(pathIndex); }
-    //std::cout << "HLT path (versioned): " << hltPathVersioned << std::endl;
+    std::cout << "HLT path (versioned): " << hltPathVersioned << std::endl;
     
     int prescaleSet = hltPrescaleProvider_.prescaleSet(iEvent, iSetup);
 #ifndef CMSSW_10_2_X
@@ -314,6 +314,8 @@ void MiniAODTriggerAnalyzer::analyze(const edm::Event& iEvent,
       // L1:  L1_DoubleEGXXpX_er1p2_dR_Max0p6
       // HLT: HLT_DoubleEleXXpX_eta1p22_mMax6
       std::string delimiter = "";
+      std::string hlt_str1 = "";
+      std::string hlt_str2 = "";
       std::string l1_str = l1_seed;
       delimiter = "L1_SingleMu";
       l1_str = l1_str.substr(l1_str.find(delimiter)+delimiter.length(),std::string::npos);
@@ -323,18 +325,24 @@ void MiniAODTriggerAnalyzer::analyze(const edm::Event& iEvent,
       if (l1_str.find("p")==std::string::npos) { l1_str.append("p0"); }
       std::string hlt_str = hlt_path;
       delimiter = "HLT_Mu";
-      hlt_str = hlt_str.substr(hlt_str.find(delimiter)+delimiter.length(),std::string::npos);
+      std::string hlt_str1_full = hlt_str.substr(hlt_str.find(delimiter)+delimiter.length(),std::string::npos);
       delimiter = "_IP";
-      hlt_str = hlt_str.substr(0,hlt_str.find(delimiter));
-      if (hlt_str.find("p")==std::string::npos) { hlt_str.append("p0"); }
-      std::cout<< l1_str <<std::endl;
-      std::cout<< hlt_str <<std::endl;
-      std::cout<< l1_seed <<std::endl;
+      hlt_str1 = hlt_str1_full.substr(0,hlt_str1_full.find(delimiter));
+      delimiter = "HLT_Mu"+hlt_str1+ "_IP";
+      if (hlt_str1.find("p")==std::string::npos) { hlt_str1.append("p0"); }
+      std::string hlt_str2_full = hlt_str.substr(hlt_str.find(delimiter)+delimiter.length(),std::string::npos);
+      delimiter = "_part";
+      hlt_str2 = hlt_str2_full.substr(0,hlt_str2_full.find(delimiter)); 
+      if (hlt_str2.find("p")==std::string::npos) { hlt_str2.append("p0"); } 
+      std::cout << "l1_str = " << l1_str <<std::endl;
+      std::cout << "hlt_str1 = " << hlt_str1 <<std::endl;
+      std::cout << "hlt_str2 = " << hlt_str2 <<std::endl;
+      std::cout << "l1_seed = "<< l1_seed <<std::endl;
 
       //std::cout<<triggercollection.size()<<endl;
       //std::cout<<std::endl;
       // Add entry to JSON maps
-      TRG trigger(l1_str,hlt_str);
+      TRG trigger(l1_str,hlt_str1,hlt_str2);
       auto entry1 = jsons_.find(trigger);
       if (entry1 == jsons_.end()) { jsons_[trigger] = JSON(); }
       auto entry2 = jsons_[trigger].find(run);
