@@ -27,9 +27,9 @@
 //#define CMSSW_10_2_X
 
 typedef std::vector<int> LS;
-typedef std::map<int,LS> JSON;
+typedef std::map<int, std::tuple<LS, int>> JSON;
 typedef std::tuple<std::string,std::string,std::string> TRG;
-typedef std::map<TRG,JSON> JSONS;
+typedef std::map<TRG, JSON> JSONS;
 
 ////////////////////////////////////////////////////////////////////////////////
 //
@@ -156,15 +156,26 @@ void MiniAODTriggerAnalyzer::printJSONs() {
       return;
     }
     
-    ss << "\"L1_" << std::get<0>(trigger) << "_HLT_" << std::get<1>(trigger) << "_IP_" << std::get<2>(trigger) << "\":" << std::endl;
-    
+    //ss << "\"L1_" << std::get<0>(trigger) << "_HLT_" << std::get<1>(trigger) << "_IP_" << std::get<2>(trigger) << "\":" << std::endl;
+    ss << "\"L1_" << std::get<0>(trigger) << "_HLT_" << std::get<1>(trigger) << "_IP_" << std::get<2>(trigger) << "\":";    
+
+    //Create JSON output with format: { num_of_events }  
+    int num_of_events = 0;
+    for (auto run : json->second) {
+      auto number = std::get<1>(run.second);
+      num_of_events += number;
+    }
+    ss << num_of_events;
+
+    /*
     // Create JSON output with format: { "run": [[ls,ls]], ... }
     ss << "{" << std::endl;
     uint idx2 = 0;
+
     for (auto run : json->second) {
       ss << "\"" << int(run.first) << "\": ["; // Run number
       int previous = 0;
-      auto ls = run.second;
+      auto ls = std::get<0>(run.second);
       std::sort(ls.begin(),ls.end());
       for ( uint idx = 0; idx < ls.size(); ++idx ) { // Lumi sections
 	if      (ls.size() == 1)       { ss << "[" << ls[idx] << ", " << ls[idx] << "]"; } // Only a single LS
@@ -179,13 +190,14 @@ void MiniAODTriggerAnalyzer::printJSONs() {
       ++idx2;
       ss << std::endl;
     }
-
+    
     // no comma for last entry!
     ss << "}";
+    */
     if (idx1+1<jsons_.size()) { ss << ","; }
     ++idx1;
     ss << std::endl;
-
+ 
   }
   ss << "}" << std::endl;
 
@@ -310,6 +322,7 @@ void MiniAODTriggerAnalyzer::analyze(const edm::Event& iEvent,
       auto ls = iEvent.luminosityBlock();
       auto event = iEvent.id().event();
 
+      std::cout << "Event = " << event << std::endl;
       // Reformat L1 seed and HLT path strings
       // L1:  L1_DoubleEGXXpX_er1p2_dR_Max0p6
       // HLT: HLT_DoubleEleXXpX_eta1p22_mMax6
@@ -346,9 +359,13 @@ void MiniAODTriggerAnalyzer::analyze(const edm::Event& iEvent,
       auto entry1 = jsons_.find(trigger);
       if (entry1 == jsons_.end()) { jsons_[trigger] = JSON(); }
       auto entry2 = jsons_[trigger].find(run);
-      if (entry2 == jsons_[trigger].end()) { jsons_[trigger][run] = LS(); }
-      auto entry3 = std::find(jsons_[trigger][run].begin(),jsons_[trigger][run].end(),ls);
-      if (entry3 == jsons_[trigger][run].end()) { jsons_[trigger][run].push_back(ls); }
+      if (entry2 == jsons_[trigger].end()) { 
+        std::get<0>(jsons_[trigger][run]) = LS(); 
+        std::get<1>(jsons_[trigger][run]) = 0;
+      }
+      auto entry3 = std::find(std::get<0>(jsons_[trigger][run]).begin(), std::get<0>(jsons_[trigger][run]).end(), ls);
+      if (entry3 == std::get<0>(jsons_[trigger][run]).end()) { std::get<0>(jsons_[trigger][run]).push_back(ls); }
+      std::get<1>(jsons_[trigger][run]) += 1;
       if (onlyLowestUnprescaledHltPath_) { break; } // Find only lowest unprescaled HLT path?
     }
 
